@@ -1,0 +1,68 @@
+---
+title: "Real estate in Aalborg"
+author: "Johan Askehave"
+date: "10/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=FALSE)
+```
+
+```{r, include = FALSE}
+
+# devtools::install_github("mikkelkrogsholm/realestateDK") # https://github.com/mikkelkrogsholm/realestateDK
+library(realestateDK) ; library(dplyr) ; library(statsDK) ; library(xts) ; library(dygraphs) ; library(DT)
+
+#df_housing_market <- table_vars("BM010")
+#df_housing_market %>% filter(description == "Aalborg") %>% pull(setting)
+
+df_housing_market_aalborg <- BM010(EJKAT20 = "2", OMR20 = "851", PRIS20 = "REAL", Tid = "*")
+df_housing_market_aalborg <- df_housing_market_aalborg %>% 
+  mutate(
+    TID = TID %>% fix_time
+  ) %>%
+  arrange(TID)
+```
+
+<br>
+
+#### Abstract
+
+<br>
+
+
+#### Introduction
+
+<br>
+
+
+#### Methods
+
+<br>
+
+
+#### Results
+
+<br>
+
+```{r, echo=FALSE}
+datatable(df_housing_market_aalborg, options = list(
+  searching = FALSE,
+  pageLength = 10,
+  lengthMenu = c(10, 20, 30, 40)
+))
+```
+
+<br>
+
+```{r, echo=FALSE, fig.width = 9.5}
+xts(df_housing_market_aalborg$INDHOLD, df_housing_market_aalborg$TID) %>%
+  dygraph(main = "Flat prices in Aalborg")
+```
+
+<br>
+
+#### Conclusion
+
+<br>
